@@ -5,9 +5,8 @@
 #include <sndfile.h>
 
 //Compile with:
-//gcc ProblemSet10.1.c -o 10.1 -lsndfile -lportaudio
-//Run with:
-//./10.1
+//gcc ProblemSet10.1.c -o 10.1 -lsndfile -lportaudio && ./10.1
+
 //------------------------------------------------------------------------------------
 //Constants
 #define kInputFileName "12STRG40MIC.aif"
@@ -42,6 +41,9 @@ SNDFILE *gInFile = NULL; //pointers to a sound files
 SF_INFO gSfInfo;
 float* outBuffer;
 //------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
 int main(int argc, char *argv[]){
   PaStream *pStream = NULL; //For port audio streaming
 	PaStreamParameters outputParameters; //Parameters for output of a stream
@@ -69,6 +71,7 @@ int main(int argc, char *argv[]){
   sndFile.file = gInFile;
   sndFile.info = &gSfInfo;
 
+  //float *output = outBuffer;
   //Open port audio streaming
   PaError error = Pa_OpenStream(
     &pStream,
@@ -126,10 +129,10 @@ int renderCallback(
   sf_count_t count;
 
   //Set output buffer to zero
-  memset(output,0,frameCount*info->channels * sizeof(float));
+  //memset(output,0,frameCount*info->channels * sizeof(float));
 
   //Copy file content to output buffer frame count at a time
-  count = sf_read_float(file, (float *) output,frameCount * info->channels);
+  count = sf_read_float(file, (float *) outBuffer,frameCount * info->channels);
 //   for(int i = gSfInfo.frames; i )
 
   //Loop

@@ -6,10 +6,9 @@
 #include <portaudio.h>
 #include <sndfile.h>
 
-//Compile with:
-//gcc ProblemSet10.2.c -o 10.2 -lportaudio -lsndfile
-//Run with:
-//./10.2
+//Compile/Run with:
+//gcc ProblemSet10.2.c -o 10.2 -lportaudio -lsndfile && ./10.2
+
 //------------------------------------------------------------------------------------
 //Constants
 #define kInputDeviceIndex 0 //Built-in input
@@ -19,6 +18,7 @@
 #define kNumChannels 2
 #define kDefaultFrequency 440.0
 #define kTableSize (1<<7) //128
+#define audioFile "Sine.aif"
 //------------------------------------------------------------------------------------
 typedef struct SoundFile {
   SNDFILE *file;
@@ -71,6 +71,8 @@ int main(int argc, char *argv[]){
   PaStream *pStream = NULL; //For port audio streaming
 	PaStreamParameters inputParameters; //Parameters for input of a stream
   PaStreamParameters outputParameters; //Parameters for output of a stream
+
+float *file = *inFile;
 
   //Set up synthesizer
   Wavetable *wavetable;
@@ -159,7 +161,7 @@ void createWavetable(Wavetable *wavetable){
 //     }
 //   }
   openInputSndFile(inFile);
-  sf_read_float(inFile, wavetable->table, inFile->info.frames); 
+  sf_read_float(file, wavetable->table, inFile->info.frames); 
 
   sf_close(inFile->file);
 }
@@ -270,9 +272,9 @@ int openInputSndFile(SoundFile *sndFile){
   memset(&sndFile->info, 0, sizeof(SF_INFO));
 
   //Open the original sound file as read mode
-  sndFile->file = sf_open("sine.aif", SFM_READ, &sndFile->info);
+  sndFile->file = sf_open(audioFile, SFM_READ, &sndFile->info);
   if(!sndFile->file){//Check if the file was succefully opened
-    printf("Error : could not open file : %s\n", "sine.aif");
+    printf("Error : could not open file : %s\n", audioFile);
 		puts(sf_strerror(NULL));
 		return 1;
   }
