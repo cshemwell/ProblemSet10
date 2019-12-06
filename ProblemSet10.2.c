@@ -72,7 +72,7 @@ int main(int argc, char *argv[]){
 	PaStreamParameters inputParameters; //Parameters for input of a stream
   PaStreamParameters outputParameters; //Parameters for output of a stream
 
-float *file = *inFile;
+//float *file = *inFile;
 
   //Set up synthesizer
   Wavetable *wavetable;
@@ -161,7 +161,7 @@ void createWavetable(Wavetable *wavetable){
 //     }
 //   }
   openInputSndFile(inFile);
-  sf_read_float(file, wavetable->table, inFile->info.frames); 
+  sf_read_float(inFile->file, wavetable->table, inFile->info.frames); 
 
   sf_close(inFile->file);
 }
